@@ -1,0 +1,76 @@
+import pdfplumber
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_community.vectorstores import Chroma
+from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_groq import ChatGroq
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.runnables import RunnablePassthrough
+from langchain_core.output_parsers import StrOutputParser
+from dotenv import load_dotenv
+
+load_dotenv()
+
+def parse_pdf(file_path: str) -> str:
+    """Extract all text from a PDF file."""
+    text = ""
+    with pdfplumber.open(file_path) as pdf:
+        for page in pdf.pages:
+            page_text = page.extract_text()
+            if page_text:
+                text += page_text + "\n"
+    return text
+
+
+def build_vector_store(text: str):
+    """Split text into chunks and embed them locally using HuggingFace."""
+    splitter = RecursiveCharacterTextSplitter(
+        chunk_size=500,
+        chunk_overlap=50
+    )
+    chunks = splitter.split_text(text)
+
+    # Free, runs locally on your machine — no API key needed
+    embeddings = HuggingFaceEmbeddings(
+        model_name="all-MiniLM-L6-v2"
+    )
+
+    vector_store = Chroma.from_texts(
+        texts=chunks,
+        embedding=embeddings,
+        collection_name="document_qa"
+    )
+    return vector_store
+
+
+def get_answer(vector_store, question: str) -> dict:
+    """Find relevant chunks and generate a grounded answer."""
+    llm = ChatGroq(model="llama-3.3-70b-versatile", temperature=0)
+
+    retriever = vector_store.as_retriever(search_kwargs={"k": 4})
+
+    prompt = ChatPromptTemplate.from_template("""
+    Answer the question based only on the context below.
+    If the answer is not in the context, say "I couldn't find that in the document."
+
+    Context: {context}
+
+    Question: {question}
+    """)
+
+    # Fetch the relevant chunks
+    source_docs = retriever.invoke(question)
+
+    chain = (
+        {"context": retriever, "question": RunnablePassthrough()}
+        | prompt
+        | llm
+        | StrOutputParser()
+    )
+
+    answer = chain.invoke(question)
+
+    # Return both the answer and the source chunks
+    return {
+        "answer": answer,
+        "sources": [doc.page_content for doc in source_docs]
+    }

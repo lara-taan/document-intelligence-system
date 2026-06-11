@@ -3,7 +3,7 @@
 
 An AI-powered document analysis system that enables natural language querying over PDF documents using Retrieval-Augmented Generation (RAG). Upload any PDF and ask questions — the system retrieves semantically relevant context and generates grounded, cited answers using a large language model.
 
-🔗 **Live Demo:** https://document-intelligence-system.streamlit.app
+🔗 **Live Demo:** https://doc-intel-rag-system.streamlit.app/
 ---
 
 ## Features

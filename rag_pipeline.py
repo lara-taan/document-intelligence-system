@@ -1,6 +1,6 @@
 import pdfplumber
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_community.vectorstores import Chroma
+from langchain_community.vectorstores import FAISS
 from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_groq import ChatGroq
 from langchain_core.prompts import ChatPromptTemplate
@@ -22,22 +22,20 @@ def parse_pdf(file_path: str) -> str:
 
 
 def build_vector_store(text: str):
-    """Split text into chunks and embed them locally using HuggingFace."""
+    """Split text into chunks and embed them using FAISS."""
     splitter = RecursiveCharacterTextSplitter(
         chunk_size=500,
         chunk_overlap=50
     )
     chunks = splitter.split_text(text)
 
-    # Free, runs locally on your machine — no API key needed
     embeddings = HuggingFaceEmbeddings(
         model_name="all-MiniLM-L6-v2"
     )
 
-    vector_store = Chroma.from_texts(
+    vector_store = FAISS.from_texts(
         texts=chunks,
-        embedding=embeddings,
-        collection_name="document_qa"
+        embedding=embeddings
     )
     return vector_store
 
@@ -57,7 +55,6 @@ def get_answer(vector_store, question: str) -> dict:
     Question: {question}
     """)
 
-    # Fetch the relevant chunks
     source_docs = retriever.invoke(question)
 
     chain = (
@@ -69,7 +66,6 @@ def get_answer(vector_store, question: str) -> dict:
 
     answer = chain.invoke(question)
 
-    # Return both the answer and the source chunks
     return {
         "answer": answer,
         "sources": [doc.page_content for doc in source_docs]

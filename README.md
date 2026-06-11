@@ -145,7 +145,5 @@ document-intelligence-system/
 
 ---
 
-## License
 
-MIT License — free to use and modify.
 

@@ -3,6 +3,7 @@
 
 An AI-powered document analysis system that enables natural language querying over PDF documents using Retrieval-Augmented Generation (RAG). Upload any PDF and ask questions — the system retrieves semantically relevant context and generates grounded, cited answers using a large language model.
 
+🔗 **Live Demo:** https://document-intelligence-system.streamlit.app
 ---
 
 ## Features
@@ -106,8 +107,6 @@ GROQ_API_KEY=your_api_key_here
 ```bash
 streamlit run app.py
 ```
-
-Open `http://localhost:8501` in your browser.
 
 ---
 

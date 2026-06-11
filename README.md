@@ -32,7 +32,7 @@ Chunking (LangChain RecursiveCharacterTextSplitter)
 Embedding (HuggingFace all-MiniLM-L6-v2)
     │
     ▼
-Vector Store (ChromaDB)
+Vector Store (FAISS)
     │
     ▼
 User Question ──► Similarity Search (top-k chunks)
@@ -65,7 +65,7 @@ User Question ──► Similarity Search (top-k chunks)
 | Language | Python 3.11 |
 | RAG Framework | LangChain |
 | Embeddings | HuggingFace `all-MiniLM-L6-v2` |
-| Vector Store | ChromaDB |
+| Vector Store | FAISS |
 | LLM | LLaMA 3 (via Groq API) |
 | PDF Parsing | pdfplumber |
 | UI | Streamlit |
@@ -82,7 +82,7 @@ User Question ──► Similarity Search (top-k chunks)
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/document-intelligence-system.git
+git clone https://github.com/lara-taan/document-intelligence-system.git
 cd document-intelligence-system
 
 # Create and activate virtual environment

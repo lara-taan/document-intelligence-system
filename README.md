@@ -12,7 +12,6 @@ An AI-powered document analysis system that enables natural language querying ov
 - **Grounded answers** generated strictly from document context, not model memory
 - **Source citations** — every answer links back to the exact chunks it was derived from
 - **Persistent chat history** within a session for multi-turn conversations
-- **Zero cloud embedding cost** — embeddings run locally via HuggingFace
 - **Clean conversational UI** built with Streamlit
 
 ---

@@ -52,7 +52,7 @@ User Question ──► Similarity Search (top-k chunks)
 2. **Parse** — Raw text is extracted page by page using `pdfplumber`
 3. **Chunk** — Text is split into overlapping 500-character chunks to preserve context
 4. **Embed** — Each chunk is converted into a vector using HuggingFace sentence embeddings
-5. **Store** — Vectors are indexed in a local ChromaDB vector store
+5. **Store** — Vectors are indexed in a local FAISS vector store
 6. **Query** — On each question, the top-4 most semantically similar chunks are retrieved
 7. **Answer** — Retrieved chunks + question are passed to LLaMA 3 (Groq API) for a grounded response
 

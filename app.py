@@ -36,7 +36,8 @@ if uploaded_file is not None:
                 with st.expander("📎 View sources from document"):
                     for i, source in enumerate(message["sources"], 1):
                         st.markdown(f"**Chunk {i}:**")
-                        st.caption(source)
+                        display_text = source[:300] + "..." if len(source) > 300 else source
+                        st.caption(display_text)
                         st.divider()
 
     # Chat input at the bottom
@@ -58,7 +59,8 @@ if uploaded_file is not None:
             with st.expander("📎 View sources from document"):
                 for i, source in enumerate(result["sources"], 1):
                     st.markdown(f"**Chunk {i}:**")
-                    st.caption(source)
+                    display_text = source[:300] + "..." if len(source) > 300 else source
+                    st.caption(display_text)
                     st.divider()
 
         # Save assistant message + sources to history

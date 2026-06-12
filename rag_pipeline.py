@@ -24,9 +24,10 @@ def parse_pdf(file_path: str) -> str:
 def build_vector_store(text: str):
     """Split text into chunks and embed them using FAISS."""
     splitter = RecursiveCharacterTextSplitter(
-        chunk_size=500,
-        chunk_overlap=50
-    )
+    chunk_size=1000,
+    chunk_overlap=150,
+    separators=["\n\n", "\n", ". ", " ", ""]
+)
     chunks = splitter.split_text(text)
 
     embeddings = HuggingFaceEmbeddings(

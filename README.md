@@ -50,7 +50,7 @@ User Question ──► Similarity Search (top-k chunks)
 
 1. **Upload** — User uploads a PDF through the Streamlit interface
 2. **Parse** — Raw text is extracted page by page using `pdfplumber`
-3. **Chunk** — Text is split into overlapping 500-character chunks to preserve context
+3. **Chunk** — Text is split into overlapping 1000-character chunks to preserve context
 4. **Embed** — Each chunk is converted into a vector using HuggingFace sentence embeddings
 5. **Store** — Vectors are indexed in a local FAISS vector store
 6. **Query** — On each question, the top-4 most semantically similar chunks are retrieved
